@@ -1,0 +1,15 @@
+{
+  "about": "Kinds of question agents answer by hand with reads and greps of instruction files: what lesson covers this, what rules exist about running, testing and deploying, whether rules duplicate or are stale, how many rules there are, which file holds a rule. Each is put to bench/fixture/ankh-api, a small project with an AGENTS.md, a CLAUDE.md, a rules file with `paths:` frontmatter and a generated lessons file. Paths are relative, so run the bench from the kit's folder. The user-level files of whoever runs it are read as well, so the expectations name only what the fixture holds. Memory folders live under ~/.claude/projects and are not part of the fixture. Expectations are what the fixture holds as of 2026-11-21. Not yet run on a model.",
+  "questions": [
+    { "id": "lesson-flaky", "q": "In bench/fixture/ankh-api, what lesson did mike record about tests that sleep for a fixed time, and what is its lesson id?", "expect": ["5101"] },
+    { "id": "rules-run-deploy", "q": "I want you to get me all the rules for how we run and deploy the project in bench/fixture/ankh-api: which files hold them?", "expect": ["AGENTS\\.md", "deploy\\.md", "start-api\\.sh|deploy-staging\\.sh"] },
+    { "id": "which-file-friday", "q": "In bench/fixture/ankh-api, which file holds the rule about deploying on a Friday, and when does it load?", "expect": ["deploy\\.md", "scripts"] },
+    { "id": "duplicates-ankh", "q": "In bench/fixture/ankh-api, do AGENTS.md and CLAUDE.md repeat any rule word for word? Name one and give both lines.", "expect": ["AGENTS\\.md", "CLAUDE\\.md", "npm test"] },
+    { "id": "stale-path", "q": "The 'Shipping a change' section of bench/fixture/ankh-api/AGENTS.md names a release checklist file. Does that file exist?", "expect": ["docs/release-checklist\\.md", "not|no longer|does not|doesn't|missing"] },
+    { "id": "stale-skill", "q": "Does bench/fixture/ankh-api/AGENTS.md name a skill that does not exist? Which?", "expect": ["watchman"] },
+    { "id": "count-shot", "do": "count", "params": { "folder": "bench/fixture/ankh-api" }, "expect": ["\"perScope\"", "\"generated\"", "mike-lessons\\.md", "deploy\\.md"] },
+    { "id": "loaded-shot", "do": "loaded", "params": { "folder": "bench/fixture/ankh-api" }, "expect": ["AGENTS\\.md", "on-demand", "\"launch\"", "paths: scripts"] },
+    { "id": "stale-shot", "do": "stale", "params": { "folder": "bench/fixture/ankh-api" }, "expect": ["docs/release-checklist\\.md", "watchman"] },
+    { "id": "duplicates-shot", "do": "duplicates", "params": { "folder": "bench/fixture/ankh-api" }, "expect": ["near-duplicate", "npm test", "deploy-staging\\.sh"] }
+  ]
+}
